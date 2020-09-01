@@ -1,3 +1,4 @@
+// add dependancies
 const express = require('express');
 const app = express();
 const PORT = 8080;
@@ -7,6 +8,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // set the view engine to ejs
 app.set('view engine', 'ejs')
 
+// synchronous code
 function generateRandomString() {
   return Math.random().toString(36).substring(2, 6) + Math.random().toString(36).substring(2, 6);
 }
@@ -15,6 +17,8 @@ const urlDatabase = {
   "9sm5xK": "http://www.google.com"
 };
 
+// Express requests/responses
+//GET requests
 app.get("/", (req, res) => {
   res.send("Hello!");
 });
@@ -28,6 +32,7 @@ app.get("/urls/new", (req, res) => {
   res.render("urls_new");
 });
 
+// POST Requests
 app.post("/urls", (req, res) => {
   // console.log(req.body);  
   const shortURL = generateRandomString();
@@ -45,7 +50,7 @@ app.post("/urls", (req, res) => {
 });
 
 
-
+// GET requests with url variable
 app.get("/u/:shortURL", (req, res) => {
   // console.log()
   const longURL = urlDatabase[req.params.shortURL];
@@ -55,7 +60,7 @@ app.get("/u/:shortURL", (req, res) => {
 });
 
 
-
+// Additional routes created at the project onset
 // // app.get('/hello', (req, res) => {
 //   res.send("<html><body>Hello <b>World</b></body></html>\n");
 // });

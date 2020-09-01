@@ -29,8 +29,18 @@ app.get("/urls/new", (req, res) => {
 });
 
 app.post("/urls", (req, res) => {
-  console.log(req.body);  // Log the POST request body to the console
-  res.send("Ok");         // Respond with 'Ok' (we will replace this)
+  console.log(req.body);  
+  const shortURL = generateRandomString();
+  const userInput = req.body['longURL']
+  if (userInput.includes('http://')) {
+    urlDatabase[shortURL] = userInput
+    console.log(urlDatabase)
+  }
+  else{
+    urlDatabase[shortURL] = "http://" + userInput
+    console.log(urlDatabase)
+  }
+  res.redirect("/:shortURL"); 
 });
 
 app.get("/urls/:shortURL", (req, res) => {

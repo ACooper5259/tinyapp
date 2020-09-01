@@ -43,18 +43,18 @@ app.post("/urls", (req, res) => {
   res.redirect("/urls/" + shortURL); 
   
 });
-// app.get('u/:shortURL',(req, res) => {
-//   let templateVars = { shortURL: req.params.shortURL, longURL: req.params.longURL };
-//   res.redirect('/urls' + templateVars['shortURL'] )
-// })
+
 
 
 app.get("/u/:shortURL", (req, res) => {
-  let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase['shortURL']};
+  console.log()
+  const longURL = urlDatabase[req.params.shortURL];
+  let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL]};
   console.log(templateVars)
   res.render('urls_show', templateVars);
   
 });
+
 
 
 // // app.get('/hello', (req, res) => {

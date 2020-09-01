@@ -45,21 +45,25 @@ app.post("/urls", (req, res) => {
     urlDatabase[shortURL] = "http://" + userInput
     console.log(urlDatabase)
   }
-  res.redirect("/urls/" + shortURL); 
+  res.redirect("/urls"); 
   
 });
 
 // Delete post request
-// app.post()
+app.post('/urls/:shortURL/delete',(req, res) => {
+  const shortURL = req.params.shortURL;
+  delete urlDatabase[shortURL];
+  res.redirect('/urls')
+})
 
 
 // GET requests with url variable
-// app.get("/u/:shortURL", (req, res) => {
-//   let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL] };
-//   console.log(templateVars)
-//   res.render('urls_show', templateVars);
+app.get("/urls/:shortURL", (req, res) => {
+  let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL] };
+  console.log(templateVars)
+  res.render('urls_show', templateVars);
 
-// });
+});
 
 app.get("/u/:shortURL", (req, res) => {
 const longURL = urlDatabase[req.params.shortURL];

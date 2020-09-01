@@ -32,11 +32,7 @@
         <tr>
           <td><%= url %></td>
           <td><%= urls[url] %></td>
-          <td><form class="form-inline" method="POST" action="/urls/<%= url %>/delete" >
-            <div class="form-group mb-2">
-              <button type="submit" class="btn btn-primary">Delete</button>
-            </div>
-          </form></td>
+          <td><form method="POST" action="/urls/<%= url %>/delete"><button type="submit">Delete</button></form></td>
         </tr>
         <% } %>
       </tbody>

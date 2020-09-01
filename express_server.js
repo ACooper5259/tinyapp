@@ -39,11 +39,11 @@ app.post("/urls", (req, res) => {
   const userInput = req.body['longURL']
   if (userInput.includes('http://')) {
     urlDatabase[shortURL] = userInput
-    console.log(urlDatabase)
+    // console.log(urlDatabase)
   }
   else{
     urlDatabase[shortURL] = "http://" + userInput
-    console.log(urlDatabase)
+    // console.log(urlDatabase)
   }
   res.redirect("/urls"); 
   
@@ -60,7 +60,7 @@ app.post('/urls/:shortURL/delete',(req, res) => {
 // GET requests with url variable
 app.get("/urls/:shortURL", (req, res) => {
   let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL] };
-  console.log(templateVars)
+  // console.log(templateVars)
   res.render('urls_show', templateVars);
 
 });

@@ -50,8 +50,10 @@ app.post("/urls", (req, res) => {
 
 
 app.get("/u/:shortURL", (req, res) => {
-  let templateVars = { shortURL: req.params.shortURL, longURL:  req.params.longURL};
+  let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase['shortURL']};
+  console.log(templateVars)
   res.render('urls_show', templateVars);
+  
 });
 
 

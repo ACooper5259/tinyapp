@@ -61,10 +61,10 @@ app.get("/u/:shortURL", (req, res) => {
 
 });
 
-// app.get("/u/:shortURL", (req, res) => {
-// const longURL = urlDatabase[req.params.shortURL];
-// res.redirect(longURL);
-// });
+app.get("/u/:shortURL", (req, res) => {
+const longURL = urlDatabase[req.params.shortURL];
+res.redirect(longURL);
+});
 
 
 // Additional routes created at the project onset

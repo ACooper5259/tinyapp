@@ -49,15 +49,22 @@ app.post("/urls", (req, res) => {
   
 });
 
+// Delete post request
+// app.post()
+
 
 // GET requests with url variable
 app.get("/u/:shortURL", (req, res) => {
-  // console.log()
-  const longURL = urlDatabase[req.params.shortURL];
-  let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL]};
+  let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL] };
+  console.log(templateVars)
   res.render('urls_show', templateVars);
-  
+
 });
+
+// app.get("/u/:shortURL", (req, res) => {
+// const longURL = urlDatabase[req.params.shortURL];
+// res.redirect(longURL);
+// });
 
 
 // Additional routes created at the project onset

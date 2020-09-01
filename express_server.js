@@ -34,16 +34,22 @@ app.post("/urls", (req, res) => {
   const userInput = req.body['longURL']
   if (userInput.includes('http://')) {
     urlDatabase[shortURL] = userInput
-    // console.log(urlDatabase)
+    console.log(urlDatabase)
   }
   else{
     urlDatabase[shortURL] = "http://" + userInput
-    // console.log(urlDatabase)
+    console.log(urlDatabase)
   }
   res.redirect("/urls/" + shortURL); 
+  
 });
+// app.get('u/:shortURL',(req, res) => {
+//   let templateVars = { shortURL: req.params.shortURL, longURL: req.params.longURL };
+//   res.redirect('/urls' + templateVars['shortURL'] )
+// })
 
-app.get("/urls/:shortURL", (req, res) => {
+
+app.get("/u/:shortURL", (req, res) => {
   let templateVars = { shortURL: req.params.shortURL, longURL:  req.params.longURL};
   res.render('urls_show', templateVars);
 });
@@ -62,6 +68,6 @@ app.get("/urls/:shortURL", (req, res) => {
 //   res.send(`a = ${a}`);
 // });
 
-// app.listen(PORT, () => {
-//   console.log(`Example app listening on port ${PORT}!`);
-// });
+app.listen(PORT, () => {
+  console.log(`Example app listening on port ${PORT}!`);
+});

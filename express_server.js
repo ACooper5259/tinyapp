@@ -32,7 +32,7 @@ const urlDatabase = {
 };
 
 const users = {
-  df34md {
+  df34md: {
     id: 'df34md',
     email: 'c@c.com',
     password: 'hello'

@@ -61,13 +61,15 @@ app.post('/registration', (req, res) => {
   if (registeredUser){
     return res.send('this email address is already registered');
   }
-  const newId = generateRandomString()
+  const id = generateRandomString()
   const newUser = {
-    id: newId,
+    id: id,
     email: req.body.email,
     password: req.body.password
   }
   users[id] = newUser;
+  console.log(users)
+  
   res.redirect('/urls')
 })
 

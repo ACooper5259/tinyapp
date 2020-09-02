@@ -51,6 +51,13 @@ app.post("/urls", (req, res) => {
   
 });
 
+// Login POST request
+app.post('/urls/login', (req, res) => {
+  res.cookie('username', req.body);
+  res.redirect('/urls');
+});
+
+
 // Delete post request
 app.post('/urls/:shortURL/delete',(req, res) => {
   const shortURL = req.params.shortURL;
@@ -64,7 +71,8 @@ app.post('/urls/:shortURL', (req, res) => {
   const shortURL = req.params.shortURL; 
   urlDatabase[shortURL] = longURL;
   res.redirect('/urls');
-})
+});
+
 
 
 // GET requests with url variable

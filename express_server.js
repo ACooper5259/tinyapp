@@ -27,8 +27,14 @@ app.get("/", (req, res) => {
 
 // Login POST request
 app.post('/login', (req, res) => {
-  console.log(req.body)
+  // console.log(req.body)
   res.cookie('username', req.body['username']);
+  res.redirect('/urls');
+});
+
+// Logout POST request
+app.post('/logout', (req, res) => {
+  res.clearCookie('username');
   res.redirect('/urls');
 });
 

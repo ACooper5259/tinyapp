@@ -13,8 +13,9 @@
     </div>
 
     <% if (username) { %>
-      <div class="form-row" style="margin: 1em;"></div>
+      <div class="form-row" style="margin: 1em;">
       <p> <%= username %> </p>
+      </div>
       <form class="form-inline" action="/logout" method="POST">
         <div class="form-group row">
           <button style="margin: 1em;" type="submit" class="btn btn-light">Logout</button>

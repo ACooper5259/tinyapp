@@ -35,6 +35,14 @@ app.get("/urls/new", (req, res) => {
 });
 
 // POST Requests
+// Login POST request
+
+app.post('/login', (req, res) => {
+  console.log(req.body)
+  res.cookie('username', req.body['username']);
+  res.redirect('/urls');
+});
+
 app.post("/urls", (req, res) => {
   // console.log(req.body);  
   const shortURL = generateRandomString();
@@ -51,12 +59,6 @@ app.post("/urls", (req, res) => {
   
 });
 
-// Login POST request
-app.post('/login', (req, res) => {
-  console.log(req.body)
-  res.cookie('username', req.body['username']);
-  res.redirect('/urls');
-});
 
 
 // Delete post request

@@ -3,27 +3,61 @@ const express = require('express');
 const app = express();
 const PORT = 8080;
 const bodyParser = require("body-parser");
-app.use(bodyParser.urlencoded({ extended: true }));
 var cookieParser = require('cookie-parser')
-app.use(cookieParser())
 
 // set the view engine to ejs
 app.set('view engine', 'ejs')
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser())
 
 // synchronous code
 function generateRandomString() {
   return Math.random().toString(36).substring(2, 6) + Math.random().toString(36).substring(2, 6);
 }
+
+const findUserByEmail = function(email) {
+  for (const userId in users) {
+    const user = users[userId];
+    if (user.email === email) {
+      return user;
+    }
+  }
+  return null;
+};
+
+// app related information storage
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
 };
+
+const users = {
+  df34md {
+    id: 'df34md',
+    email: 'c@c.com',
+    password: 'hello'
+  }
+}
+
+
 
 // Express requests/responses
 //GET requests
 app.get("/", (req, res) => {
   res.send("Hello!");
 });
+
+// Registration POST request
+app.post('/registration', (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
+  // console.log(req.body)
+
+  if (!email || !password) {
+    return res.send('email and password can not be empty')
+  }
+
+})
 
 // Login POST request
 app.post('/login', (req, res) => {

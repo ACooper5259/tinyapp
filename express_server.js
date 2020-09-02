@@ -4,6 +4,8 @@ const app = express();
 const PORT = 8080;
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: true }));
+var cookieParser = require('cookie-parser')
+app.use(cookieParser())
 
 // set the view engine to ejs
 app.set('view engine', 'ejs')

@@ -68,8 +68,10 @@ app.post('/registration', (req, res) => {
     password: req.body.password
   }
   users[id] = newUser;
-  console.log(users)
-  
+  // console.log(users)
+
+  // set cookie at registration
+  res.cookie('user_id', newUser.id);
   res.redirect('/urls')
 })
 

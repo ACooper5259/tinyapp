@@ -38,6 +38,7 @@ app.post('/logout', (req, res) => {
   res.redirect('/urls');
 });
 
+
 app.get("/urls", (req, res) => {
   let templateVars = {
     'username': req.cookies['username'],
@@ -51,8 +52,14 @@ app.get("/urls/new", (req, res) => {
   res.render("urls_new", templateVars);
 });
 
-// POST Requests
+// Registration GET Request request
+app.get('/registration', (req, res) => {
+  let templateVars = { 'username': req.cookies['username'] }
+  res.render('registration', templateVars)
+})
 
+
+// POST Requests
 app.post("/urls", (req, res) => {
   // console.log(req.body);  
   const shortURL = generateRandomString();

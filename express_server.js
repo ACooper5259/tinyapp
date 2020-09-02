@@ -53,7 +53,8 @@ app.post("/urls", (req, res) => {
 
 // Login POST request
 app.post('/urls/login', (req, res) => {
-  res.cookie('username', req.body);
+  console.log(req.body)
+  res.cookie('username', req.body['username']);
   res.redirect('/urls');
 });
 

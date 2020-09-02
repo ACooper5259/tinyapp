@@ -25,8 +25,18 @@ app.get("/", (req, res) => {
   res.send("Hello!");
 });
 
+// Login POST request
+app.post('/login', (req, res) => {
+  console.log(req.body)
+  res.cookie('username', req.body['username']);
+  res.redirect('/urls');
+});
+
 app.get("/urls", (req, res) => {
-  let templateVars = {urls: urlDatabase};
+  let templateVars = {
+    'username': req.cookies['username'],
+    urls: urlDatabase
+  };
   res.render('urls_index', templateVars);
 });
 
@@ -35,13 +45,6 @@ app.get("/urls/new", (req, res) => {
 });
 
 // POST Requests
-// Login POST request
-
-app.post('/login', (req, res) => {
-  console.log(req.body)
-  res.cookie('username', req.body['username']);
-  res.redirect('/urls');
-});
 
 app.post("/urls", (req, res) => {
   // console.log(req.body);  

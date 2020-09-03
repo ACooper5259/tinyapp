@@ -88,9 +88,17 @@ app.post('/logout', (req, res) => {
   res.redirect('/urls');
 });
 
+// Login GET request
+app.get('/login', (req, res) => {
+  const userInfo = req.cookies['user_id'];
+  let templateVars = {
+    user: users[userInfo]
+  };
+  res.render('login', templateVars);
+});
 
 app.get("/urls", (req, res) => {
-  const userInfo = req.cookies['user_id']
+  const userInfo = req.cookies['user_id'];
   // console.log('the id is:', users[cookieUserId])
   let templateVars = {
     user: users[userInfo],

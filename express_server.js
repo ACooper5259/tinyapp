@@ -30,15 +30,11 @@ const urlsForUserId = function (user_id) {
   for (let item in urlDatabase) {
     const shortURL = urlDatabase[item];
     if (shortURL['user_id'] === user_id) {
-    //   console.log ('url database user id id: ', shortURL.user_id)
-    //   console.log('user id from cookie is: ' , user_id)
       const  userUrl = {
        shortURL_id: shortURL.shortURL_id,
        longURL: shortURL.longURL
       } 
-      console.log(userUrl)
       singleUserUrls[shortURL.shortURL]= userUrl
-    //   singleUserUrls['longURL']=shortURL.longURL
     };
   };
   return singleUserUrls;
@@ -94,7 +90,6 @@ app.post('/registration', (req, res) => {
     password: req.body.password
   }
   users[id] = newUser;
-  console.log(users)
   // set cookie at registration
   res.cookie('user_id', newUser.id);
   res.redirect('/urls');
@@ -102,7 +97,6 @@ app.post('/registration', (req, res) => {
 
 // Login POST request
 app.post('/login', (req, res) => {
-  // console.log(req.body)
   const email = req.body.email;
   const password = req.body.password;
   const registeredUser = findUserByEmail(email)
@@ -135,13 +129,8 @@ app.get('/login', (req, res) => {
 //  /urls get request
 app.get("/urls", (req, res) => {
   const userInfo = req.cookies['user_id'];
-  // console.log('the id is:', userInfo)
   const urlsForOneUser = urlsForUserId(userInfo)
-  // console.log(userUrlsArray)
-  // const userUrls = urlsForUserId(userInfo)
   if (userInfo) {
-    
-    
     let templateVars = {
       user: users[userInfo],
       urls: urlsForOneUser
@@ -172,22 +161,17 @@ app.get('/registration', (req, res) => {
 
 // URLs POST Requests for a new short URL
 app.post("/urls", (req, res) => {
-  // console.log(req.body);  
   const userInfo = req.cookies['user_id'];
   const shortURL = generateRandomString();
   const userInput = req.body['longURL']
-  // if (!userInput.includes('http://')) {
-  //   userInput = "http://" + userInput
   const newURL = {
     shortURL_id: shortURL,
     longURL: userInput,
     user_id: userInfo
   };
   urlDatabase[shortURL] = newURL;
-  console.log(urlDatabase)
   
   res.redirect("/urls"); 
-  
 });
 
 // Delete post request
@@ -212,14 +196,11 @@ app.get("/urls/:shortURL", (req, res) => {
   const userInfo = req.cookies['user_id']
   const shortURL = req.params.shortURL
   if (userInfo) {
-    console.log(urlDatabase[shortURL])
-    console.log(shortURL)
     let templateVars = {
       user: users[userInfo], 
       shortURL: shortURL, 
       longURL: urlDatabase[shortURL].longURL 
     };
-    // console.log(templateVars)
     res.render('urls_show', templateVars);
     } else {
       res.redirect('/login')

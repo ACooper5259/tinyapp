@@ -27,8 +27,14 @@ const findUserByEmail = function(email) {
 
 // app related information storage
 const urlDatabase = {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
+  "b2xVn2": {
+    longURL: "http://www.lighthouselabs.ca",
+    user_id: 'df34md'
+  },
+  "9sm5xK": {
+    longURL: "http://www.google.com",
+    user_id: 'df34md'
+  }
 };
 
 const users = {
@@ -127,8 +133,7 @@ app.get("/urls", (req, res) => {
   res.render('urls_index', templateVars);
 });
 
-app.get("/urls/new", (req, res) => {
-  
+app.get("/urls/new", (req, res) => { 
   const userInfo = req.cookies['user_id']
   if (userInfo) {
     let templateVars = { user: users[userInfo],}
@@ -146,24 +151,23 @@ app.get('/registration', (req, res) => {
 })
 
 
-// POST Requests
+// URLs POST Requests for a new short URL
 app.post("/urls", (req, res) => {
   // console.log(req.body);  
+  const userInfo = req.cookies['user_id'];
   const shortURL = generateRandomString();
   const userInput = req.body['longURL']
-  if (userInput.includes('http://')) {
-    urlDatabase[shortURL] = userInput
-    // console.log(urlDatabase)
-  }
-  else{
-    urlDatabase[shortURL] = "http://" + userInput
-    // console.log(urlDatabase)
-  }
+  // if (!userInput.includes('http://')) {
+  //   userInput = "http://" + userInput
+  const newURL = {
+    longURL: userInput,
+    user_id: userInfo
+  };
+  urlDatabase[shortURL] = newURL;
+  
   res.redirect("/urls"); 
   
 });
-
-
 
 // Delete post request
 app.post('/urls/:shortURL/delete',(req, res) => {
@@ -172,11 +176,11 @@ app.post('/urls/:shortURL/delete',(req, res) => {
   res.redirect('/urls')
 })
 
-// EDIT post request
+// EDIT longURL POST request
 app.post('/urls/:shortURL', (req, res) => {
   const longURL = req.body['updatedLongURL']
   const shortURL = req.params.shortURL; 
-  urlDatabase[shortURL] = longURL;
+  urlDatabase[shortURL].longURL = longURL;
   res.redirect('/urls');
 });
 

@@ -26,22 +26,33 @@ const findUserByEmail = function(email) {
 };
 
 const urlsForUserId = function (user_id) {
-  const userInfo = req.cookies['user_id'];
-  const userUrls = []
-  for (shortURL in urlDatabase) {
-    if (shortURL['user_id'] === userInfo) {
-      userUrls.push(shortURL)
-    }
-  }
-}
+  const singleUserUrls = {}
+  for (let item in urlDatabase) {
+    const shortURL = urlDatabase[item];
+    if (shortURL['user_id'] === user_id) {
+    //   console.log ('url database user id id: ', shortURL.user_id)
+    //   console.log('user id from cookie is: ' , user_id)
+      const  userUrl = {
+       shortURL_id: shortURL.shortURL_id,
+       longURL: shortURL.longURL
+      } 
+      console.log(userUrl)
+      singleUserUrls[shortURL.shortURL]= userUrl
+    //   singleUserUrls['longURL']=shortURL.longURL
+    };
+  };
+  return singleUserUrls;
+};
 
 // app related information storage
 const urlDatabase = {
   "b2xVn2": {
+    shortURL_id: "b2xVn2",
     longURL: "http://www.lighthouselabs.ca",
     user_id: 'df34md'
   },
   "9sm5xK": {
+    shortURL_id: "9sm5xK",
     longURL: "http://www.google.com",
     user_id: 'df34md'
   }
@@ -124,11 +135,16 @@ app.get('/login', (req, res) => {
 //  /urls get request
 app.get("/urls", (req, res) => {
   const userInfo = req.cookies['user_id'];
-  // console.log('the id is:', users[cookieUserId])
+  // console.log('the id is:', userInfo)
+  const urlsForOneUser = urlsForUserId(userInfo)
+  // console.log(userUrlsArray)
+  // const userUrls = urlsForUserId(userInfo)
   if (userInfo) {
+    
+    
     let templateVars = {
       user: users[userInfo],
-      urls: urlDatabase
+      urls: urlsForOneUser
     };
     res.render('urls_index', templateVars);
   } else {
@@ -163,10 +179,12 @@ app.post("/urls", (req, res) => {
   // if (!userInput.includes('http://')) {
   //   userInput = "http://" + userInput
   const newURL = {
+    shortURL_id: shortURL,
     longURL: userInput,
     user_id: userInfo
   };
   urlDatabase[shortURL] = newURL;
+  console.log(urlDatabase)
   
   res.redirect("/urls"); 
   
@@ -194,6 +212,8 @@ app.get("/urls/:shortURL", (req, res) => {
   const userInfo = req.cookies['user_id']
   const shortURL = req.params.shortURL
   if (userInfo) {
+    console.log(urlDatabase[shortURL])
+    console.log(shortURL)
     let templateVars = {
       user: users[userInfo], 
       shortURL: shortURL, 

@@ -32,12 +32,12 @@
         <% for(let url in urls) { %>
         <tr>
           <td>
-            <a href="/u/<%= url %>""><%= url %></a>
+            <a href="/u/<%= urls[url].shortURL_id %>""><%= urls[url].shortURL_id %></a>
           </td>
           <td><%= urls[url].longURL %></td>
-          <td><form method="POST" action="/urls/<%= url %>/delete"><button type="submit">Delete</button></form></td>
+          <td><form method="POST" action="/urls/<%= urls[url].shortURL_id %>/delete"><button type="submit">Delete</button></form></td>
           <td>
-            <a href="/urls/<%= url %>">
+            <a href="/urls/<%= urls[url].shortURL_id %>">
               <button type="submit">Edit</button>
               </a>
             </form>

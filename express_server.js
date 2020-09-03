@@ -53,8 +53,7 @@ app.post('/registration', (req, res) => {
   const password = req.body.password;
 
   if (!email || !password) {
-    res.status(400).send('Email and password can not be blank');
-    return;
+    return res.status(400).send('Email and password can not be blank');
   };
   // send message if already registered or add new user to users
   const registeredUser = findUserByEmail(email)
@@ -72,13 +71,27 @@ app.post('/registration', (req, res) => {
 
   // set cookie at registration
   res.cookie('user_id', newUser.id);
-  res.redirect('/urls')
+  
 })
 
 // Login POST request
 app.post('/login', (req, res) => {
   // console.log(req.body)
-  res.cookie('user_id', req.body['user_id']);
+  const email = req.body.email;
+  const password = req.body.password;
+  const registeredUser = findUserByEmail(email)
+
+  // user not found in the database 
+  if (registeredUser === null) {
+    res.sendStatus(403)
+  } 
+
+  if (registeredUser.password !== password) {
+    res.sendStatus(403)
+  }
+  
+
+  res.cookie('user_id', registeredUser.id);
   res.redirect('/urls');
 });
 

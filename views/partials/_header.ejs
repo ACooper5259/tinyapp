@@ -28,14 +28,14 @@
         </div>
       </form> -->
     <% } else { %>
-      <div class="form-row" style="margin: 1em;">
-      <p> Logged in as: <%= user.email %> </p>
-      </div>
-      <form class="form-inline" action="/logout" method="POST">
-        <div class="form-group row">
-          <button style="margin: 1em;" type="submit" class="btn btn-light">Logout</button>
+      <div class="row">
+        <div class="col-md-8">Logged in as: <%= user.email %></div>
+        <div class="col-md-4">
+          <form action="/logout" method="POST">
+            <button style="margin: 1em;" type="submit" type="button" class="btn btn-default">Logout
+            </button>
+          </form>
         </div>
-      </form>
       </div>
     <% } %>     
         

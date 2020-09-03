@@ -67,11 +67,11 @@ app.post('/registration', (req, res) => {
     password: req.body.password
   }
   users[id] = newUser;
-  // console.log(users)
+  console.log(users)
 
   // set cookie at registration
   res.cookie('user_id', newUser.id);
-  
+  res.redirect('/urls');
 })
 
 // Login POST request
@@ -83,7 +83,7 @@ app.post('/login', (req, res) => {
 
   // user not found in the database 
   if (registeredUser === null) {
-    res.sendStatus(403)
+    return res.sendStatus(403)
   } 
 
   if (registeredUser.password !== password) {

@@ -25,6 +25,16 @@ const findUserByEmail = function(email) {
   return null;
 };
 
+const urlsForUserId = function (user_id) {
+  const userInfo = req.cookies['user_id'];
+  const userUrls = []
+  for (shortURL in urlDatabase) {
+    if (shortURL['user_id'] === userInfo) {
+      userUrls.push(shortURL)
+    }
+  }
+}
+
 // app related information storage
 const urlDatabase = {
   "b2xVn2": {
@@ -53,13 +63,6 @@ app.get("/", (req, res) => {
   res.send("Hello!");
 });
 
-// // New tiny URL POST request
-// app.post('/urls/new', (req, res) => {
-//    console.log (req.body)
-
-//   res.redirect('/login')
-// }
-
 // Registration POST request
 app.post('/registration', (req, res) => {
   const email = req.body.email;
@@ -81,7 +84,6 @@ app.post('/registration', (req, res) => {
   }
   users[id] = newUser;
   console.log(users)
-
   // set cookie at registration
   res.cookie('user_id', newUser.id);
   res.redirect('/urls');
@@ -93,17 +95,13 @@ app.post('/login', (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   const registeredUser = findUserByEmail(email)
-
   // user not found in the database 
   if (registeredUser === null) {
     return res.sendStatus(403)
   } 
-
   if (registeredUser.password !== password) {
     res.sendStatus(403)
   }
-  
-
   res.cookie('user_id', registeredUser.id);
   res.redirect('/urls');
 });
@@ -123,14 +121,19 @@ app.get('/login', (req, res) => {
   res.render('login', templateVars);
 });
 
+//  /urls get request
 app.get("/urls", (req, res) => {
   const userInfo = req.cookies['user_id'];
   // console.log('the id is:', users[cookieUserId])
-  let templateVars = {
-    user: users[userInfo],
-    urls: urlDatabase
-  };
-  res.render('urls_index', templateVars);
+  if (userInfo) {
+    let templateVars = {
+      user: users[userInfo],
+      urls: urlDatabase
+    };
+    res.render('urls_index', templateVars);
+  } else {
+    res.send('Please register or login first')
+  }
 });
 
 app.get("/urls/new", (req, res) => { 
@@ -143,7 +146,7 @@ app.get("/urls/new", (req, res) => {
   }
 });
 
-// Registration GET Request request
+// Registration GET Registration request
 app.get('/registration', (req, res) => {
   const userInfo = req.cookies['user_id']
   let templateVars = { user: users[userInfo], }
@@ -190,12 +193,17 @@ app.post('/urls/:shortURL', (req, res) => {
 app.get("/urls/:shortURL", (req, res) => {
   const userInfo = req.cookies['user_id']
   const shortURL = req.params.shortURL
-  let templateVars = {
-    user: users[userInfo], 
-    shortURL: shortURL, longURL: urlDatabase[shortURL].longURL };
-  // console.log(templateVars)
-  res.render('urls_show', templateVars);
-
+  if (userInfo) {
+    let templateVars = {
+      user: users[userInfo], 
+      shortURL: shortURL, 
+      longURL: urlDatabase[shortURL].longURL 
+    };
+    // console.log(templateVars)
+    res.render('urls_show', templateVars);
+    } else {
+      res.redirect('/login')
+    }
 });
 
 app.get("/u/:shortURL", (req, res) => {

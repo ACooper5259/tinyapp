@@ -78,33 +78,37 @@ app.post('/registration', (req, res) => {
 // Login POST request
 app.post('/login', (req, res) => {
   // console.log(req.body)
-  res.cookie('username', req.body['username']);
+  res.cookie('user_id', req.body['user_id']);
   res.redirect('/urls');
 });
 
 // Logout POST request
 app.post('/logout', (req, res) => {
-  res.clearCookie('username');
+  res.clearCookie('user_id');
   res.redirect('/urls');
 });
 
 
 app.get("/urls", (req, res) => {
+  const userInfo = req.cookies['user_id']
+  // console.log('the id is:', users[cookieUserId])
   let templateVars = {
-    'username': req.cookies['username'],
+    user: users[userInfo],
     urls: urlDatabase
   };
   res.render('urls_index', templateVars);
 });
 
 app.get("/urls/new", (req, res) => {
-  let templateVars = {'username': req.cookies['username']}
+  const userInfo = req.cookies['user_id']
+  let templateVars = { user: users[userInfo],}
   res.render("urls_new", templateVars);
 });
 
 // Registration GET Request request
 app.get('/registration', (req, res) => {
-  let templateVars = { 'username': req.cookies['username'] }
+  const userInfo = req.cookies['user_id']
+  let templateVars = { user: users[userInfo], }
   res.render('registration', templateVars)
 })
 
@@ -147,14 +151,17 @@ app.post('/urls/:shortURL', (req, res) => {
 
 // GET requests with url variable
 app.get("/urls/:shortURL", (req, res) => {
-  let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL] };
+  const userInfo = req.cookies['user_id']
+  let templateVars = {
+    user: users[userInfo], 
+    shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL] };
   // console.log(templateVars)
   res.render('urls_show', templateVars);
 
 });
 
 app.get("/u/:shortURL", (req, res) => {
-const longURL = urlDatabase[req.params.shortURL];
+  const longURL = urlDatabase[req.params.shortURL];
 res.redirect(longURL);
 });
 

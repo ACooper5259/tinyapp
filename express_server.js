@@ -47,6 +47,13 @@ app.get("/", (req, res) => {
   res.send("Hello!");
 });
 
+// // New tiny URL POST request
+// app.post('/urls/new', (req, res) => {
+//    console.log (req.body)
+
+//   res.redirect('/login')
+// }
+
 // Registration POST request
 app.post('/registration', (req, res) => {
   const email = req.body.email;
@@ -121,9 +128,14 @@ app.get("/urls", (req, res) => {
 });
 
 app.get("/urls/new", (req, res) => {
+  
   const userInfo = req.cookies['user_id']
-  let templateVars = { user: users[userInfo],}
-  res.render("urls_new", templateVars);
+  if (userInfo) {
+    let templateVars = { user: users[userInfo],}
+    res.render("urls_new", templateVars);
+  } else {
+    res.redirect('/login')
+  }
 });
 
 // Registration GET Request request

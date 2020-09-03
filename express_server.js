@@ -189,16 +189,19 @@ app.post('/urls/:shortURL', (req, res) => {
 // GET requests with url variable
 app.get("/urls/:shortURL", (req, res) => {
   const userInfo = req.cookies['user_id']
+  const shortURL = req.params.shortURL
   let templateVars = {
     user: users[userInfo], 
-    shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL] };
+    shortURL: shortURL, longURL: urlDatabase[shortURL].longURL };
   // console.log(templateVars)
   res.render('urls_show', templateVars);
 
 });
 
 app.get("/u/:shortURL", (req, res) => {
-  const longURL = urlDatabase[req.params.shortURL];
+  const shortURL = req.params.shortURL
+  // const shortURLinfo = urlDatabase[shortURL]
+  const longURL = urlDatabase[shortURL].longURL;
 res.redirect(longURL);
 });
 

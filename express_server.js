@@ -53,12 +53,13 @@ app.post('/registration', (req, res) => {
   const password = req.body.password;
 
   if (!email || !password) {
-    return res.status(400).send('Email and password can not be blank')
+    res.status(400).send('Email and password can not be blank');
+    return;
   };
   // send message if already registered or add new user to users
   const registeredUser = findUserByEmail(email)
   if (registeredUser){
-    return res.send('this email address is already registered');
+    return res.status(400).send('this email address is already registered');
   }
   const id = generateRandomString()
   const newUser = {

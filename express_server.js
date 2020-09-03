@@ -51,10 +51,9 @@ app.get("/", (req, res) => {
 app.post('/registration', (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
-  // console.log(req.body)
 
   if (!email || !password) {
-    return res.send('email and password can not be empty')
+    return res.status(400).send('Email and password can not be blank')
   };
   // send message if already registered or add new user to users
   const registeredUser = findUserByEmail(email)

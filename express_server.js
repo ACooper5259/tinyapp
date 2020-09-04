@@ -138,7 +138,7 @@ app.get("/", (req, res) => {
 app.get('/login', (req, res) => {
   const userInfo = req.session.user_id;
   let templateVars = {
-    user: users[userInfo];
+    user: users[userInfo]
   };
   res.render('login', templateVars);
 });

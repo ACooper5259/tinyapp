@@ -176,17 +176,31 @@ app.post("/urls", (req, res) => {
 
 // Delete post request
 app.post('/urls/:shortURL/delete',(req, res) => {
+  const userInfo = req.cookies['user_id'];
   const shortURL = req.params.shortURL;
-  delete urlDatabase[shortURL];
-  res.redirect('/urls')
+  const databaseUserId = urlDatabase[shortURL].user_id;
+  if (databaseUserId === userInfo) {
+    delete urlDatabase[shortURL];
+    res.redirect('/urls');
+  } else {
+    res.redirect('/urls');
+    console.log(urlDatabase)
+
+  }
 })
 
 // EDIT longURL POST request
 app.post('/urls/:shortURL', (req, res) => {
-  const updatedLongURL = req.body['updatedLongURL']
+  const userInfo = req.cookies['user_id'];
+  const updatedLongURL = req.body['updatedLongURL'];
   const shortURL = req.params.shortURL; 
-  urlDatabase[shortURL].longURL = updatedLongURL;
-  res.redirect('/urls');
+  const databaseUserId = urlDatabase[shortURL].user_id;
+  if (databaseUserId === userInfo) {
+    urlDatabase[shortURL].longURL = updatedLongURL;
+    res.redirect('/urls');
+  } else {
+    res.redirect('/urls')
+  }
 });
 
 

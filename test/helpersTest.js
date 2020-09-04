@@ -21,4 +21,9 @@ describe('findUserByEmail', function () {
     const expectedOutput = testUsers['userRandomID'];
     assert.deepEqual(user, expectedOutput)
   });
+  it('should return undefined user with non-existent email', function () {
+    const user = findUserByEmail("", testUsers)
+    const expectedOutput = undefined;
+    assert.equal(user, expectedOutput)
+  });
 });

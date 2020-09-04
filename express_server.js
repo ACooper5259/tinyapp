@@ -133,6 +133,7 @@ app.post("/urls", (req, res) => {
     user_id: userInfo
   };
   urlDatabase[shortURL] = newURL;
+  console.log (urlDatabase)
   
   res.redirect("/urls"); 
 });

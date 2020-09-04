@@ -19,9 +19,9 @@ function generateRandomString() {
   return Math.random().toString(36).substring(2, 6) + Math.random().toString(36).substring(2, 6);
 }
 
-const findUserByEmail = function(email) {
-  for (const userId in users) {
-    const user = users[userId];
+const findUserByEmail = function(email, database) {
+  for (const userId in database) {
+    const user = database[userId];
     if (user.email === email) {
       return user;
     }

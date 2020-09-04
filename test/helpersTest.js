@@ -15,15 +15,15 @@ const testUsers = {
   }
 };
 
-describe('findUserByEmail', function () {
-  it('should return a user with valid email', function () {
-    const user = findUserByEmail("user@example.com", testUsers)
+describe('findUserByEmail', function() {
+  it('should return a user with valid email', function() {
+    const user = findUserByEmail("user@example.com", testUsers);
     const expectedOutput = testUsers['userRandomID'];
-    assert.deepEqual(user, expectedOutput)
+    assert.deepEqual(user, expectedOutput);
   });
-  it('should return undefined user with non-existent email', function () {
-    const user = findUserByEmail("", testUsers)
+  it('should return undefined user with non-existent email', function() {
+    const user = findUserByEmail("", testUsers);
     const expectedOutput = undefined;
-    assert.equal(user, expectedOutput)
+    assert.equal(user, expectedOutput);
   });
 });

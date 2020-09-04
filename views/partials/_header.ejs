@@ -15,24 +15,24 @@
     <% if (!user || !user.email) { %>
       <div class="row">
         <div class="col-md-6">
-          <a class="btn btn-default" href="/registration" role="button">Register</a>
+          <a class="btn btn-default" href="/registration" role="button">
+            Register
+          </a>
         </div>
-        <div class="col-md-6"><a class="btn btn-default" href="/login" role="button">Login</a>
+        <div class="col-md-6">
+          <a class="btn btn-default" href="/login" role="button">Login</a>
+        </div>
       </div>
-    </div>
       
-      <!-- <form class="form-inline" action="/login" method="POST">
-        <div class="form-group row">
-          <input class="form-control" type="text" name="user_id" placeholder="email" style="width: 200px; margin: 1em;">
-          <button style="margin: 1em;" type="submit" class="btn btn-light">Submit</button>
-        </div>
-      </form> -->
     <% } else { %>
       <div class="row">
-        <div class="col-md-8">Logged in as: <%= user.email %></div>
+        <div class="col-md-8">
+          Logged in as: <%= user.email %>
+        </div>
         <div class="col-md-4">
           <form action="/logout" method="POST">
-            <button style="margin: 1em;" type="submit" type="button" class="btn btn-default">Logout
+            <button style="margin: 1em;" type="submit" type="button" class="btn btn-default">
+              Logout
             </button>
           </form>
         </div>

@@ -129,7 +129,7 @@ app.post("/urls", (req, res) => {
   urlDatabase[shortURL] = newURL;
   console.log (urlDatabase)
   
-  res.redirect("/urls"); 
+  res.redirect("/urls/"+shortURL); 
 });
 
 /////// GET REQUESTS
@@ -224,14 +224,14 @@ app.get("/urls/:shortURL", (req, res) => {
     };
     res.render('urls_show', templateVars);
     } else {
-      res.redirect('/login')
+      res.send('Sorry you must be logged in to access this area.')
     }
 });
 
 // 
 app.get("/u/:shortURL", (req, res) => {
   const shortURL = req.params.shortURL
-  // const shortURLinfo = urlDatabase[shortURL]
+  const shortURLinfo = urlDatabase[shortURL]
   const longURL = urlDatabase[shortURL].longURL;
 res.redirect(longURL);
 });

@@ -6,6 +6,7 @@ const cookieSession = require('cookie-session')
 const app = express();
 const PORT = 8080;
 
+const helperFunctions = require('./helpers.js')
 // set the view engine to ejs
 app.set('view engine', 'ejs')
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -19,15 +20,7 @@ function generateRandomString() {
   return Math.random().toString(36).substring(2, 6) + Math.random().toString(36).substring(2, 6);
 }
 
-const findUserByEmail = function(email, database) {
-  for (const userId in database) {
-    const user = database[userId];
-    if (user.email === email) {
-      return user;
-    }
-  }
-  return null;
-};
+
 
 const urlsForUserId = function (user_id) {
   const singleUserUrls = []
@@ -77,7 +70,7 @@ app.post('/registration', (req, res) => {
     return res.status(400).send('Email and password can not be blank');
   };
   // send message if already registered or add new user to users
-  const registeredUser = findUserByEmail(email)
+  const registeredUser = helperFunctions.findUserByEmail(email, users)
   if (registeredUser){
     return res.status(400).send('this email address is already registered');
   }
@@ -100,7 +93,7 @@ app.post('/login', (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   
-  const registeredUser = findUserByEmail(email)
+  const registeredUser = helperFunctions.findUserByEmail(email, users);
   const hashedPassword = registeredUser.password
   // user not found in the database 
   if (registeredUser === null) {

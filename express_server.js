@@ -30,7 +30,7 @@ const findUserByEmail = function(email) {
 };
 
 const urlsForUserId = function (user_id) {
-  const singleUserUrls = {}
+  const singleUserUrls = []
   for (let item in urlDatabase) {
     const shortURL = urlDatabase[item];
     if (shortURL['user_id'] === user_id) {
@@ -38,7 +38,7 @@ const urlsForUserId = function (user_id) {
        shortURL_id: shortURL.shortURL_id,
        longURL: shortURL.longURL
       } 
-      singleUserUrls[shortURL.shortURL]= userUrl
+      singleUserUrls.push(userUrl)
     };
   };
   return singleUserUrls;

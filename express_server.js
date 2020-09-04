@@ -185,16 +185,6 @@ app.post('/urls/:shortURL/delete',(req, res) => {
 app.post('/urls/:shortURL', (req, res) => {
   const updatedLongURL = req.body['updatedLongURL']
   const shortURL = req.params.shortURL; 
-  console.log("updatedlong url: ",req.body['updatedLongURL'])
-  console.log('req.params.shortURL: ',req.params)
-  for (item in urlDatabase) {
-    if (item.longURL === req.params.shortURL) {
-      item.longURL
-    }
-  }
-  
-  const theOneToChange = urlDatabase[shortURL] 
-  // console.log (urlDatabase)
   urlDatabase[shortURL].longURL = updatedLongURL;
   res.redirect('/urls');
 });

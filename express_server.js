@@ -94,6 +94,7 @@ app.post('/login', (req, res) => {
   const password = req.body.password;
   
   const registeredUser = helperFunctions.findUserByEmail(email, users);
+  console.log('registeredUser: ', registeredUser)
   const hashedPassword = registeredUser.password
   // user not found in the database 
   if (registeredUser === null) {

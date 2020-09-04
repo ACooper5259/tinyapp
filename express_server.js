@@ -79,12 +79,14 @@ app.post('/registration', (req, res) => {
     return res.status(400).send('this email address is already registered');
   }
   const id = generateRandomString()
+  const hashedPassword = bcrypt.hashSync(password, 10)
   const newUser = {
     id: id,
     email: req.body.email,
-    password: req.body.password
+    password: hashedPassword
   }
   users[id] = newUser;
+  console.log(users)
   // set cookie at registration
   res.cookie('user_id', newUser.id);
   res.redirect('/urls');
@@ -94,22 +96,26 @@ app.post('/registration', (req, res) => {
 app.post('/login', (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
+  
   const registeredUser = findUserByEmail(email)
+  const hashedPassword = registeredUser.password
   // user not found in the database 
   if (registeredUser === null) {
     return res.sendStatus(403)
   } 
-  if (registeredUser.password !== password) {
+  if (bcrypt.compareSync(password, hashedPassword)) {
+    res.cookie('user_id', registeredUser.id);
+    res.redirect('/urls');
+  } else {
     res.sendStatus(403)
   }
-  res.cookie('user_id', registeredUser.id);
-  res.redirect('/urls');
+  
 });
 
 // Logout POST request
 app.post('/logout', (req, res) => {
   res.clearCookie('user_id');
-  res.redirect('/urls');
+  res.redirect('/login');
 });
 
 

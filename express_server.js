@@ -1,9 +1,10 @@
 // add dependancies
 const express = require('express');
+const bcrypt = require('bcrypt');
+const bodyParser = require("body-parser");
+const cookieParser = require('cookie-parser')
 const app = express();
 const PORT = 8080;
-const bodyParser = require("body-parser");
-var cookieParser = require('cookie-parser')
 
 // set the view engine to ejs
 app.set('view engine', 'ejs')
@@ -62,19 +63,13 @@ const users = {
   }
 }
 
-
-
-// Express requests/responses
-//GET requests
-app.get("/", (req, res) => {
-  res.send("Hello!");
-});
+// POST REQUESTS
 
 // Registration POST request
 app.post('/registration', (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
-
+  
   if (!email || !password) {
     return res.status(400).send('Email and password can not be blank');
   };
@@ -117,47 +112,6 @@ app.post('/logout', (req, res) => {
   res.redirect('/urls');
 });
 
-// Login GET request
-app.get('/login', (req, res) => {
-  const userInfo = req.cookies['user_id'];
-  let templateVars = {
-    user: users[userInfo]
-  };
-  res.render('login', templateVars);
-});
-
-//  /urls get request
-app.get("/urls", (req, res) => {
-  const userInfo = req.cookies['user_id'];
-  const urlsForOneUser = urlsForUserId(userInfo)
-  if (userInfo) {
-    let templateVars = {
-      user: users[userInfo],
-      urls: urlsForOneUser
-    };
-    res.render('urls_index', templateVars);
-  } else {
-    res.send('Please register or login first')
-  }
-});
-
-app.get("/urls/new", (req, res) => { 
-  const userInfo = req.cookies['user_id']
-  if (userInfo) {
-    let templateVars = { user: users[userInfo],}
-    res.render("urls_new", templateVars);
-  } else {
-    res.redirect('/login')
-  }
-});
-
-// Registration GET Registration request
-app.get('/registration', (req, res) => {
-  const userInfo = req.cookies['user_id']
-  let templateVars = { user: users[userInfo], }
-  res.render('registration', templateVars)
-})
-
 
 // URLs POST Requests for a new short URL
 app.post("/urls", (req, res) => {
@@ -173,6 +127,57 @@ app.post("/urls", (req, res) => {
   
   res.redirect("/urls"); 
 });
+
+/////// GET REQUESTS
+
+// root
+app.get("/", (req, res) => {
+  res.send("Hello!");
+});
+
+// Login page
+app.get('/login', (req, res) => {
+  const userInfo = req.cookies['user_id'];
+  let templateVars = {
+    user: users[userInfo]
+  };
+  res.render('login', templateVars);
+});
+
+// main urls info page
+app.get("/urls", (req, res) => {
+  const userInfo = req.cookies['user_id'];
+  const urlsForOneUser = urlsForUserId(userInfo)
+  if (userInfo) {
+    let templateVars = {
+      user: users[userInfo],
+      urls: urlsForOneUser
+    };
+    res.render('urls_index', templateVars);
+  } else {
+    res.send('Please register or login first')
+  }
+});
+
+// request a new tiny url page
+app.get("/urls/new", (req, res) => { 
+  const userInfo = req.cookies['user_id']
+  if (userInfo) {
+    let templateVars = { user: users[userInfo],}
+    res.render("urls_new", templateVars);
+  } else {
+    res.redirect('/login')
+  }
+});
+
+// Registration page
+app.get('/registration', (req, res) => {
+  const userInfo = req.cookies['user_id']
+  let templateVars = { user: users[userInfo], }
+  res.render('registration', templateVars)
+})
+
+//////////// OTHER POSTS AND GETS
 
 // Delete post request
 app.post('/urls/:shortURL/delete',(req, res) => {
@@ -203,8 +208,6 @@ app.post('/urls/:shortURL', (req, res) => {
   }
 });
 
-
-
 // GET requests with url variable
 app.get("/urls/:shortURL", (req, res) => {
   const userInfo = req.cookies['user_id']
@@ -221,6 +224,7 @@ app.get("/urls/:shortURL", (req, res) => {
     }
 });
 
+// 
 app.get("/u/:shortURL", (req, res) => {
   const shortURL = req.params.shortURL
   // const shortURLinfo = urlDatabase[shortURL]

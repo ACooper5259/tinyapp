@@ -14,10 +14,10 @@ function generateRandomString() {
   return Math.random().toString(36).substring(2, 6) + Math.random().toString(36).substring(2, 6);
 };
 
-const urlsForUserId = function (user_id) {
+const urlsForUserId = function (user_id, database) {
   const singleUserUrls = [];
-  for (let item in urlDatabase) {
-    const shortURL = urlDatabase[item];
+  for (let item in database) {
+    const shortURL = database[item];
     if (shortURL['user_id'] === user_id) {
       const userUrl = {
         shortURL_id: shortURL.shortURL_id,

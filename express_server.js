@@ -5,7 +5,6 @@ const bodyParser = require("body-parser");
 const cookieSession = require('cookie-session')
 const app = express();
 const PORT = 8080;
-
 const helperFunctions = require('./helpers.js');
 // set the view engine to ejs
 app.set('view engine', 'ejs');
@@ -14,26 +13,6 @@ app.use(cookieSession({
   name: 'session',
   keys: ['key1'],
 }));
-
-// synchronous code
-function generateRandomString() {
-  return Math.random().toString(36).substring(2, 6) + Math.random().toString(36).substring(2, 6);
-};
-
-const urlsForUserId = function(user_id) {
-  const singleUserUrls = [];
-  for (let item in urlDatabase) {
-    const shortURL = urlDatabase[item];
-    if (shortURL['user_id'] === user_id) {
-      const  userUrl = {
-       shortURL_id: shortURL.shortURL_id,
-       longURL: shortURL.longURL
-      } 
-      singleUserUrls.push(userUrl);
-    };
-  };
-  return singleUserUrls;
-};
 
 // app related information storage
 const urlDatabase = {
@@ -72,7 +51,7 @@ app.post('/registration', (req, res) => {
   if (registeredUser){
     return res.status(400).send('this email address is already registered');
   }
-  const id = generateRandomString();
+  const id = helperFunctions.generateRandomString();
   const hashedPassword = bcrypt.hashSync(password, 10);
   const newUser = {
     id: id,
@@ -116,7 +95,7 @@ app.post('/logout', (req, res) => {
 // URLs POST Requests for a new short URL
 app.post("/urls", (req, res) => {
   const userInfo = req.session.user_id;
-  const shortURL = generateRandomString();
+  const shortURL = helperFunctions.generateRandomString();
   const userInput = req.body['longURL'];
   const newURL = {
     shortURL_id: shortURL,
@@ -146,7 +125,7 @@ app.get('/login', (req, res) => {
 // main urls info page
 app.get("/urls", (req, res) => {
   const userInfo = req.session.user_id;
-  const urlsForOneUser = urlsForUserId(userInfo);
+  const urlsForOneUser = helperFunctions.urlsForUserId(userInfo, urlDatabase);
   if (userInfo) {
     let templateVars = {
       user: users[userInfo],
@@ -209,7 +188,8 @@ app.post('/urls/:shortURL', (req, res) => {
 app.get("/urls/:shortURL", (req, res) => {
   const userInfo = req.session.user_id;
   const shortURL = req.params.shortURL;
-  if (userInfo) {
+  const databaseUserId = urlDatabase[shortURL].user_id;
+  if (databaseUserId === userInfo) {
     let templateVars = {
       user: users[userInfo], 
       shortURL: shortURL, 
@@ -221,28 +201,14 @@ app.get("/urls/:shortURL", (req, res) => {
     }
 });
 
-// 
+// universally accessible page
 app.get("/u/:shortURL", (req, res) => {
   const shortURL = req.params.shortURL;
-  const shortURLinfo = urlDatabase[shortURL];
+  // const shortURLinfo = urlDatabase[shortURL];
   const longURL = urlDatabase[shortURL].longURL;
 res.redirect(longURL);
 });
 
-
-// Additional routes created at the project onset
-// // app.get('/hello', (req, res) => {
-//   res.send("<html><body>Hello <b>World</b></body></html>\n");
-// });
-
-// // app.get("/set", (req, res) => {
-//   const a = 1;
-//   res.send(`a = ${a}`);
-// });
-
-// // app.get("/fetch", (req, res) => {
-//   res.send(`a = ${a}`);
-// });
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);

@@ -204,9 +204,9 @@ app.get("/urls/:shortURL", (req, res) => {
 // universally accessible page
 app.get("/u/:shortURL", (req, res) => {
   const shortURL = req.params.shortURL;
-  // const shortURLinfo = urlDatabase[shortURL];
+  const shortURLinfo = urlDatabase[shortURL];
   const longURL = urlDatabase[shortURL].longURL;
-res.redirect(longURL);
+  res.redirect(longURL);
 });
 
 
